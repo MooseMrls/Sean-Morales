@@ -679,6 +679,11 @@ body {
 }
 
 /* Contact Section */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
 .contact-section {
   background: var(--gradient-section);
   position: relative;

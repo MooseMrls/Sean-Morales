@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import emailjs from 'emailjs-com';
 import { ChevronDown, Github, Linkedin, Mail, ExternalLink, Code, Palette, Smartphone, Globe, Menu, X, Sun, Moon, ChevronUp } from 'lucide-react';
 import './App.css'; 
 
@@ -138,6 +139,46 @@ const App = () => {
       description: 'Designing intuitive user experiences with modern design principles and accessibility in mind.'
     }
   ];
+
+const [formData, setFormData] = useState({
+  name: '',
+  email: '',
+  message: ''
+});
+
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setFormData(prev => ({
+    ...prev,
+    [name]: value
+  }));
+};
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  
+  const serviceId = 'service_wsbuoxp';
+  const templateId = 'template_dim6sic';
+  const userId = 'HECJM-eRsITMpWKj5';
+  
+  emailjs.send(serviceId, templateId, {
+    from_name: formData.name,
+    from_email: formData.email,
+    message: formData.message,
+    to_email: 'morales.seanpatrick@gmail.com'
+  }, userId)
+  .then((response) => {
+    alert('Message sent successfully!');
+    setFormData({
+      name: '',
+      email: '',
+      message: ''
+    });
+  }, (error) => {
+    alert('Failed to send message. Please try again later.');
+    console.error('EmailJS error:', error);
+  });
+};
 
   return (
     <div className="min-h-screen">
@@ -358,7 +399,7 @@ const App = () => {
         </div>
       </section>
 
-      {/* Contact Section */}
+{/* Contact Section */}
       <section id="contact" className="section contact-section">
         <div className="contact-container">
           <div className="section-header">
@@ -405,33 +446,47 @@ const App = () => {
             </div>
             
             <div className="contact-form-container">
-              <div>
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  className="contact-input"
-                />
-              </div>
-              <div>
-                <input
-                  type="email"
-                  placeholder="Your Email"
-                  className="contact-input"
-                />
-              </div>
-              <div>
-                <textarea
-                  placeholder="Your Message"
-                  rows={4}
-                  className="contact-input contact-textarea"
-                ></textarea>
-              </div>
-              <button
-                onClick={() => alert('Message sent!')}
-                className="contact-button"
-              >
-                Send Message
-              </button>
+              <form onSubmit={handleSubmit} className="contact-form">
+                <div>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Your Name"
+                    className="contact-input"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Your Email"
+                    className="contact-input"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div>
+                  <textarea
+                    name="message"
+                    placeholder="Your Message"
+                    rows={4}
+                    className="contact-input contact-textarea"
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  className="contact-button"
+                >
+                  Send Message
+                </button>
+              </form>
             </div>
           </div>
         </div>
