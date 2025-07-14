@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, Github, Linkedin, Mail, ExternalLink, Code, Palette, Smartphone, Globe, Menu, X, Sun, Moon, ChevronUp } from 'lucide-react';
+import { ChevronDown, Github, Linkedin, Mail, ExternalLink, Code, Palette, Smartphone, Globe, Menu, X } from 'lucide-react';
 import './App.css'; 
 
 import Duciel from './images/Duciel.jpg';
@@ -10,40 +10,11 @@ const App = () => {
   const [activeSection, setActiveSection] = useState('hero');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true);
-  const [showScrollTop, setShowScrollTop] = useState(false);
-  const [isNearBottom, setIsNearBottom] = useState(false);
-
-  useEffect(() => {
-    // Check for saved theme preference or default to dark mode
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === 'dark');
-    } else {
-      // Check system preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setIsDarkMode(prefersDark);
-    }
-  }, []);
-
-  useEffect(() => {
-    // Apply theme to document
-    document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      
       setIsScrolled(scrollPosition > 50);
-      setShowScrollTop(scrollPosition > 300);
-      
-      // Check if near bottom (within 200px of bottom)
-      const isNearBottom = scrollPosition + windowHeight >= documentHeight - 200;
-      setIsNearBottom(isNearBottom);
       
       const sections = ['hero', 'about', 'projects', 'contact'];
       const currentSection = sections.find(section => {
@@ -72,22 +43,12 @@ const App = () => {
     setIsMenuOpen(false);
   };
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
-
   const skills = [
     { name: 'React', level: 95, color: 'skill-bar-blue-500' },
     { name: 'JavaScript', level: 90, color: 'skill-bar-blue-400' },
     { name: 'Node.js', level: 85, color: 'skill-bar-blue-600' },
     { name: 'TypeScript', level: 80, color: 'skill-bar-blue-500' },
+    // { name: 'Python', level: 75, color: 'skill-bar-blue-400' },
     { name: 'HTML/CSS', level: 90, color: 'skill-bar-blue-600' },
     { name: 'Multimedia Arts'},
     { name: 'Graphic Design'},
@@ -97,7 +58,7 @@ const App = () => {
   const projects = [
     {
       title: 'E-Commerce Platform',
-      description: 'Modern e-commerce platform built exclusively for perfume enthusiasts and sellers. Designed to deliver a seamless shopping experience, this allows customers to browse, order, and review premium fragrances—while providing admins with full control over inventory, sales records, and performance reports.',
+      description: 'a modern e-commerce platform built exclusively for perfume enthusiasts and sellers. Designed to deliver a seamless shopping experience, this allows customers to browse, order, and review premium fragrances—while providing admins with full control over inventory, sales records, and performance reports.',
       tech: ['React', 'Node.js', 'MongoDB'],
       image: Duciel,
       github: 'https://github.com/MooseMrls',
@@ -132,6 +93,11 @@ const App = () => {
       title: 'Backend Development',
       description: 'Building robust server-side applications with Node.js, and Python.'
     },
+    // {
+    //   icon: <Smartphone className="w-8 h-8" />,
+    //   title: 'Mobile Development',
+    //   description: 'Developing cross-platform mobile applications using React Native and Flutter.'
+    // },
     {
       icon: <Palette className="w-8 h-8" />,
       title: 'UI/UX Design',
@@ -140,7 +106,7 @@ const App = () => {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-900 text-white">
       {/* Navigation */}
       <nav className={`fixed-nav ${isScrolled ? 'nav-scrolled' : ''}`}>
         <div className="nav-container">
@@ -161,34 +127,17 @@ const App = () => {
                     {section === 'hero' ? 'Home' : section}
                   </button>
                 ))}
-                
-                {/* Theme Toggle Button */}
-                <button
-                  onClick={toggleTheme}
-                  className="theme-toggle-btn"
-                  aria-label="Toggle theme"
-                >
-                  {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                </button>
               </div>
             </div>
 
-            {/* Mobile menu button and theme toggle */}
-            <div className="mobile-controls">
+            {/* Mobile menu button */}
+            <div className="mobile-menu-button">
               <button
-                onClick={toggleTheme}
-                className="theme-toggle-btn mobile-theme-toggle"
-                aria-label="Toggle theme"
-              >
-                {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-              </button>
-              
-              {/* <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="mobile-menu-btn"
               >
                 {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button> */}
+              </button>
             </div>
           </div>
         </div>
@@ -268,6 +217,7 @@ const App = () => {
               </p>
               <div className="about-badges">
                 <span className="about-badge">2+ Years Experience</span>
+                {/* <span className="about-badge">50+ Projects</span> */}
                 <span className="about-badge">Remote Work</span>
               </div>
             </div>
@@ -286,6 +236,35 @@ const App = () => {
           </div>
         </div>
       </section>
+
+      {/* Skills Section */}
+      {/* <section id="skills" className="section skills-section">
+        <div className="section-container">
+          <div className="section-header">
+            <h2 className="section-title">
+              Skills & Technologies
+            </h2>
+            <div className="section-divider"></div>
+          </div>
+          
+          <div className="skills-grid">
+            {skills.map((skill, index) => (
+              <div key={index} className="skill-card">
+                <div className="skill-header">
+                  <h3 className="skill-name">{skill.name}</h3>
+                  <span className="skill-level">{skill.level}%</span>
+                </div>
+                <div className="skill-bar-bg">
+                  <div 
+                    className={`skill-bar-fill ${skill.color}`}
+                    style={{ width: `${skill.level}%` }}
+                  ></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section> */}
 
       {/* Projects Section */}
       <section id="projects" className="section">
@@ -338,25 +317,25 @@ const App = () => {
         </div>
       </section>
 
-      {/* Skills Section */}
-      <section id="skills" className="section skills-section">
-        <div className="section-container">
-          <div className="section-header">
-            <h2 className="section-title">
-              Skills & Technologies
-            </h2>
-            <div className="section-divider"></div>
-          </div>
-          
-          <div className="skills-grid">
-            {skills.map((skill, index) => (
-              <div key={index} className="skill-item">
-                <span className="skill-name">{skill.name}</span>
-              </div>
-            ))}
-          </div>
+{/* Skills Section */}
+<section id="skills" className="section skills-section">
+  <div className="section-container">
+    <div className="section-header">
+      <h2 className="section-title">
+        Skills & Technologies
+      </h2>
+      <div className="section-divider"></div>
+    </div>
+    
+    <div className="skills-grid">
+      {skills.map((skill, index) => (
+        <div key={index} className="skill-item">
+          <span className="skill-name">{skill.name}</span>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Contact Section */}
       <section id="contact" className="section contact-section">
@@ -445,17 +424,6 @@ const App = () => {
           </p>
         </div>
       </footer>
-
-      {/* Scroll to Top Button */}
-      {showScrollTop && (
-        <button
-          onClick={scrollToTop}
-          className={`scroll-to-top ${isNearBottom ? 'scroll-to-top-prominent' : ''}`}
-          aria-label="Scroll to top"
-        >
-          <ChevronUp className="w-6 h-6" />
-        </button>
-      )}
     </div>
   );
 };
