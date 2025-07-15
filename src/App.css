@@ -668,6 +668,7 @@ body {
   .profile-image-wrapper {
     width: 120px;
     height: 120px;
+    margin-top: 15px;
   }
   
   .profile-ring-1 {
@@ -1384,6 +1385,15 @@ body {
 .footer-text {
   color: var(--text-disabled);
   font-size: 0.875rem;
+  padding-top: 20px;
+}
+
+.footer-animation{
+  position: absolute;
+  display: flex;
+  left: 0;
+  bottom: 1;
+  gap: 50px;
 }
 
 /* Scroll to Top Button */
@@ -1895,7 +1905,47 @@ textarea:focus-visible {
 }
 
 /* Responsive adjustments */
+@media (max-width: 1080px) {
+  .gallery-button {
+     margin-left: 420px;
+    }
+}
+
+@media (max-width: 774px) {
+  .gallery-button {
+     margin-left: 270px;
+    }
+}
+@media (max-width: 850px) {
+  .gallery-button {
+     margin-left: 310px;
+    }
+}
+
 @media (max-width: 768px) {
+  .gallery-button {
+  background: var(--gradient-button);
+  color: #ffffff;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-button);
+  text-decoration: none;
+  display: inline-block;
+  margin-left: 5px;
+
+}
+
+ .gallery-button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    }
+
   .gallery-modal {
     padding: 1rem;
   }
@@ -1969,4 +2019,46 @@ textarea:focus-visible {
   .gallery-modal-grid {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   }
+}
+
+/* Gallery Modal Closing Animation */
+.gallery-modal.closing {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+.gallery-modal.closing .gallery-modal-content {
+  animation: slideOut 0.3s ease forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes slideOut {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(20px); opacity: 0; }
+}
+
+/* Gallery Modal Closing Animation */
+.gallery-modal.closing {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+.gallery-modal.closing .gallery-modal-overlay {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+.gallery-modal.closing .gallery-modal-content {
+  animation: slideOut 0.3s ease forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes slideOut {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(20px); opacity: 0; }
 }

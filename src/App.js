@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'; // Added useRef import
+import React, { useState, useEffect, useRef } from 'react'; 
 import emailjs from 'emailjs-com';
+import Lottie from 'lottie-react';
 import { ChevronDown, Github, Linkedin, Mail, ExternalLink, Code, Palette, Smartphone, Globe, Menu, X, Sun, Moon, ChevronUp, User } from 'lucide-react';
 import './App.css'; 
 
@@ -11,6 +12,12 @@ import bul from './images/bulcard.png';
 import base from './images/base.png'; 
 import gw from './images/gw.png';
 import rh from './images/rh.png';
+
+import animationData from './animations/Batman.json'; 
+import amongus from './animations/amongus.json';
+import mario from './animations/mario.json';
+import arcade from './animations/arcade.json';
+import pp from './animations/Paper Plane.json';
 
 import profileImage from './images/me.jpg'; 
 
@@ -129,6 +136,8 @@ const App = () => {
   const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [isGalleryModalClosing, setIsGalleryModalClosing] = useState(false);
+  const [isDesignModalClosing, setIsDesignModalClosing] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -236,18 +245,39 @@ const App = () => {
   };
 
 // Modal functions
+const closeGalleryModal = () => {
+  setIsGalleryModalClosing(true);
+  setTimeout(() => {
+    setIsGalleryModalOpen(false);
+    setIsGalleryModalClosing(false);
+  }, 300);
+};
+
 const openModal = (design) => {
   setSelectedDesign(design);
   setIsModalOpen(true);
 };
 
 const closeModal = () => {
-  setIsModalOpen(false);
-  setSelectedDesign(null);
+  setIsDesignModalClosing(true);
+  setTimeout(() => {
+    setIsModalOpen(false);
+    setIsDesignModalClosing(false);
+    setSelectedDesign(null);
+  }, 300);
 };
 
 const openProfileModal = () => {
-  setIsProfileModalOpen(true);
+  // Scroll to top first
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+
+  // Wait for scroll to complete (approximately 500ms)
+  setTimeout(() => {
+    setIsProfileModalOpen(true);
+  }, 500);
 };
 
 const closeProfileModal = () => {
@@ -614,7 +644,7 @@ const closeProfileModal = () => {
     </ScrollReveal>
 
     <ScrollReveal direction="up" delay={200}>
-      <div className="text-center">
+      <div className="gallery-button-container">
         <button 
           className="gallery-button"
           onClick={() => setIsGalleryModalOpen(true)}
@@ -627,18 +657,21 @@ const closeProfileModal = () => {
   </div>
 </section>
 
-{/* Gallery Modal */}
-{isGalleryModalOpen && (
-  <div className="gallery-modal">
-    <div className="gallery-modal-overlay" onClick={() => setIsGalleryModalOpen(false)}></div>
-    <div className="gallery-modal-content gallery-modal-full">
-      <button 
-        className="gallery-modal-close"
-        onClick={() => setIsGalleryModalOpen(false)}
-        aria-label="Close gallery"
-      >
-        <X className="w-6 h-6" />
-      </button>
+      {/* Gallery Modal */}
+      {isGalleryModalOpen && (
+        <div className={`gallery-modal ${isGalleryModalClosing ? 'closing' : ''}`}>
+          <div 
+            className="gallery-modal-overlay" 
+            onClick={closeGalleryModal}
+          ></div>
+          <div className="gallery-modal-content gallery-modal-full">
+            <button 
+            className="gallery-modal-close"
+            onClick={closeGalleryModal} 
+            aria-label="Close gallery"
+          >
+            <X className="w-6 h-6" />
+          </button>
       
       <div className="gallery-modal-header">
         <h3 className="gallery-modal-title">Gallery</h3>
@@ -674,8 +707,11 @@ const closeProfileModal = () => {
 
 {/* Individual Design Modal */}
 {isModalOpen && selectedDesign && (
-  <div className="gallery-modal">
-    <div className="gallery-modal-overlay" onClick={closeModal}></div>
+  <div className={`gallery-modal ${isDesignModalClosing ? 'closing' : ''}`}>
+    <div 
+      className="gallery-modal-overlay" 
+      onClick={closeModal}
+    ></div>
     <div className="gallery-modal-content">
       <button 
         className="gallery-modal-close"
@@ -824,15 +860,47 @@ const closeProfileModal = () => {
       </section>
 
       {/* Footer */}
-      <footer className="footer">
-        <div className="footer-container">
-          <ScrollReveal direction="fade" delay={100}>
-            <p className="footer-text">
-              © 2025 Sean Patrick Morales. All rights reserved.
-            </p>
-          </ScrollReveal>
-        </div>
-      </footer>
+       <footer className="footer">
+  <div className="footer-container">  
+    <div className="footer-animation">
+      <Lottie 
+        animationData={animationData}
+        loop={true}
+        autoplay={true}
+        style={{ height: 90 }}
+      />
+      <Lottie 
+        animationData={amongus}
+        loop={true}
+        autoplay={true}
+        style={{ height: 100,  }}
+      />
+      <Lottie 
+        animationData={mario}
+        loop={true}
+        autoplay={true}
+        style={{ height: 180, top: -38, left: 28, position: 'absolute' }}
+      />
+      {/* <Lottie 
+        animationData={arcade}
+        loop={true}
+        autoplay={true}
+        style={{ height: 80 }}
+      /> */}
+       <Lottie 
+        animationData={pp}
+        loop={true}
+        autoplay={true}
+        style={{ height: 80, transform:'scaleX(-1)' }}
+      />
+    </div>
+    <ScrollReveal direction="fade" delay={100}>
+      <p className="footer-text">
+        © 2025 Sean Patrick Morales. All rights reserved.
+      </p>
+    </ScrollReveal>
+  </div>
+</footer>
 
       {/* Scroll to Top Button */}
       {showScrollTop && (
