@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'; // Added useRef import
 import emailjs from 'emailjs-com';
-import { ChevronDown, Github, Linkedin, Mail, ExternalLink, Code, Palette, Smartphone, Globe, Menu, X, Sun, Moon, ChevronUp } from 'lucide-react';
+import { ChevronDown, Github, Linkedin, Mail, ExternalLink, Code, Palette, Smartphone, Globe, Menu, X, Sun, Moon, ChevronUp, User } from 'lucide-react';
 import './App.css'; 
 
 import Duciel from './images/Duciel.jpg';
@@ -11,6 +11,8 @@ import bul from './images/bulcard.png';
 import base from './images/base.png'; 
 import gw from './images/gw.png';
 import rh from './images/rh.png';
+
+import profileImage from './images/me.jpg'; 
 
 const useScrollAnimation = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -125,6 +127,8 @@ const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDesign, setSelectedDesign] = useState(null);
   const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -242,6 +246,42 @@ const closeModal = () => {
   setSelectedDesign(null);
 };
 
+const openProfileModal = () => {
+  setIsProfileModalOpen(true);
+};
+
+const closeProfileModal = () => {
+    setIsClosing(true);
+    
+    // Wait for animation to complete before hiding modal
+    setTimeout(() => {
+      setIsProfileModalOpen(false);
+      setIsClosing(false);
+    }, 300); // 300ms matches the animation duration
+  };
+
+  // Handle ESC key press
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isProfileModalOpen) {
+        closeProfileModal();
+      }
+    };
+
+    if (isProfileModalOpen) {
+      document.addEventListener('keydown', handleEscape);
+      // Prevent body scroll when modal is open
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isProfileModalOpen]);
+
+  // if (!isProfileModalOpen) return null;
+
   const skills = [
     { name: 'React', level: 95, color: 'skill-bar-blue-500' },
     { name: 'JavaScript', level: 90, color: 'skill-bar-blue-400' },
@@ -323,8 +363,44 @@ const closeModal = () => {
         <div className="nav-container">
           <div className="nav-inner">
             <div className="nav-logo">
-              <span className="text-blue-400">Portfolio</span>
+              <button 
+                onClick={openProfileModal}
+                className="portfolio-logo-btn"
+                aria-label="View profile"
+              >
+                <span className="text-blue-400">Portfolio</span>
+              </button>
             </div>
+
+            {/* Profile Modal */}
+            {isProfileModalOpen && (
+              <div className={`profile-modal ${isClosing ? 'closing' : ''}`}>
+                <div className="profile-modal-overlay" onClick={closeProfileModal}></div>
+                <div className="profile-modal-content">
+                
+                  <div className="profile-modal-inner">
+                    <div className="profile-image-container">
+                      <div className="profile-image-wrapper">
+                        <img 
+                          src={profileImage} 
+                          alt="Sean Patrick Morales"
+                          className="profile-image"
+                        />
+                      </div>
+                      <div className="profile-rings">
+                        <div className="profile-ring profile-ring-1"></div>
+                        <div className="profile-ring profile-ring-2"></div>
+                        <div className="profile-ring profile-ring-3"></div>
+                      </div>
+                    </div>
+                    
+                    <div className="profile-info">
+                      <h2 className="profile-name">Sean Patrick Morales</h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             
             {/* Desktop Navigation */}
             <div className="nav-desktop">
@@ -692,7 +768,7 @@ const closeModal = () => {
                   </div>
                   <div>
                     <h3 className="contact-info-title">LinkedIn</h3>
-                    <p className="contact-info-text">linkedin.com/in/sean-patrick-morales</p>
+                    <p className="contact-info-text">linkedin.com/in/sean-patrick-morales-22a697268</p>
                   </div>
                 </div>
               </div>
