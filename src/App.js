@@ -6,6 +6,11 @@ import './App.css';
 import Duciel from './images/Duciel.jpg';
 import AM from './images/AM.jpg';
 import mapsa from './images/mapsa.jpg'
+import nugits from './images/nugits.png';
+import bul from './images/bulcard.png'; 
+import base from './images/base.png'; 
+import gw from './images/gw.png';
+import rh from './images/rh.png';
 
 const useScrollAnimation = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -111,13 +116,16 @@ const ParallaxElement = ({ children, speed = 0.5, className = '' }) => {
 };
 
 const App = () => {
-  // All hooks must be declared at the top
   const [activeSection, setActiveSection] = useState('hero');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isNearBottom, setIsNearBottom] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDesign, setSelectedDesign] = useState(null);
+  const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -125,49 +133,45 @@ const App = () => {
   });
 
   useEffect(() => {
-    // Check for saved theme preference or default to dark mode
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
       setIsDarkMode(savedTheme === 'dark');
     } else {
-      // Check system preference
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       setIsDarkMode(prefersDark);
     }
   }, []);
 
   useEffect(() => {
-    // Apply theme to document
     document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      
-      setIsScrolled(scrollPosition > 50);
-      setShowScrollTop(scrollPosition > 300);
-      
-      // Check if near bottom (within 200px of bottom)
-      const isNearBottom = scrollPosition + windowHeight >= documentHeight - 200;
-      setIsNearBottom(isNearBottom);
-      
-      const sections = ['hero', 'about', 'projects', 'contact'];
-      const currentSection = sections.find(section => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom >= 100;
-        }
-        return false;
-      });
-      
-      if (currentSection) {
-        setActiveSection(currentSection);
+    const scrollPosition = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    
+    setIsScrolled(scrollPosition > 50);
+    setShowScrollTop(scrollPosition > 300);
+    
+    const isNearBottom = scrollPosition + windowHeight >= documentHeight - 200;
+    setIsNearBottom(isNearBottom);
+    
+    const sections = ['hero', 'about', 'skills', 'projects', 'gallery', 'contact'];
+    const currentSection = sections.find(section => {
+      const element = document.getElementById(section);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        return rect.top <= 100 && rect.bottom >= 100;
       }
+      return false;
+    });
+    
+    if (currentSection) {
+      setActiveSection(currentSection);
+    }
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -227,6 +231,17 @@ const App = () => {
     });
   };
 
+// Modal functions
+const openModal = (design) => {
+  setSelectedDesign(design);
+  setIsModalOpen(true);
+};
+
+const closeModal = () => {
+  setIsModalOpen(false);
+  setSelectedDesign(null);
+};
+
   const skills = [
     { name: 'React', level: 95, color: 'skill-bar-blue-500' },
     { name: 'JavaScript', level: 90, color: 'skill-bar-blue-400' },
@@ -262,6 +277,14 @@ const App = () => {
       image: mapsa,
       github: 'https://github.com/MooseMrls',
       live: 'https://mapsa.onrender.com/home.html'
+    },
+      {
+      title: 'Guidance Web App',
+      description: 'A digital platform designed to enhance student support through a blend of emotional, academic, and personal growth tools. Built with a modern, user-friendly interface, the system empowers guidance counselors and students to connect meaningfully in a safe and supportive environment.',
+      tech: ['Python', 'MongoDB'],
+      image: nugits,
+      github: 'https://github.com/MooseMrls',
+      live: 'https://www.nu-gits.com/'
     }
   ];
 
@@ -283,6 +306,16 @@ const App = () => {
     }
   ];
 
+  const designs = [
+  { id: 1, image: AM, title: 'Aquamom Water Station', category: '' },
+  { id: 2, image: bul, title: 'Bulldogs Card Sticker', category: '' },
+  { id: 3, image: base, title: 'The Basement', category: '' },
+  { id: 4, image: rh, title: 'Royal Hooligans', category: '' },
+  { id: 5, image: gw, title: 'Goldwings Insurance Agency', category: '' },
+  // { id: 6, image: design6, title: 'Design 6', category: 'Digital' },
+  // Add more designs as needed
+];
+
   return (
     <div className="min-h-screen">
       {/* Navigation */}
@@ -296,7 +329,7 @@ const App = () => {
             {/* Desktop Navigation */}
             <div className="nav-desktop">
               <div className="nav-desktop-items">
-                {['hero', 'about', 'projects', 'contact'].map((section) => (
+                {['hero', 'about', 'projects', 'gallery', 'skills', 'contact'].map((section) => (
                   <button
                     key={section}
                     onClick={() => scrollToSection(section)}
@@ -332,21 +365,21 @@ const App = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="mobile-menu">
-            <div className="mobile-menu-items">
-              {['hero', 'about', 'skills', 'projects', 'contact'].map((section) => (
-                <button
-                  key={section}
-                  onClick={() => scrollToSection(section)}
-                  className="mobile-menu-item"
-                >
-                  {section === 'hero' ? 'Home' : section}
-                </button>
-              ))}
-            </div>
+        <div className="mobile-menu">
+          <div className="mobile-menu-items">
+            {['hero', 'about', 'skills', 'projects', 'gallery', 'contact'].map((section) => (
+              <button
+                key={section}
+                onClick={() => scrollToSection(section)}
+                className="mobile-menu-item"
+              >
+                {section === 'hero' ? 'Home' : section}
+              </button>
+            ))}
           </div>
-        )}
-      </nav>
+        </div>
+      )}
+     </nav>
 
       {/* Hero Section */}
       <section id="hero" className="hero-section">
@@ -488,6 +521,110 @@ const App = () => {
           </StaggeredReveal>
         </div>
       </section>
+
+{/* Gallery Modal */}
+<section id="gallery" className="gal-section">
+  <div className="section-container">
+    <ScrollReveal direction="up" delay={100}>
+      <div className="section-header">
+        <h2 className="section-title">
+          Gallery
+        </h2>
+        <div className="section-divider"></div>
+        <p className="contact-description">
+          Explore my graphic design portfolio
+        </p>
+      </div>
+    </ScrollReveal>
+
+    <ScrollReveal direction="up" delay={200}>
+      <div className="text-center">
+        <button 
+          className="gallery-button"
+          onClick={() => setIsGalleryModalOpen(true)}
+          aria-label="Open gallery"
+        >
+          View Gallery
+        </button>
+      </div>
+    </ScrollReveal>
+  </div>
+</section>
+
+{/* Gallery Modal */}
+{isGalleryModalOpen && (
+  <div className="gallery-modal">
+    <div className="gallery-modal-overlay" onClick={() => setIsGalleryModalOpen(false)}></div>
+    <div className="gallery-modal-content gallery-modal-full">
+      <button 
+        className="gallery-modal-close"
+        onClick={() => setIsGalleryModalOpen(false)}
+        aria-label="Close gallery"
+      >
+        <X className="w-6 h-6" />
+      </button>
+      
+      <div className="gallery-modal-header">
+        <h3 className="gallery-modal-title">Gallery</h3>
+        <p className="gallery-modal-subtitle">Click on any image to view</p>
+      </div>
+      
+      <div className="gallery-modal-grid">
+        {designs.map((design) => (
+          <button 
+            key={design.id} 
+            className="gallery-item"
+            onClick={() => openModal(design)}
+            aria-label={`View ${design.title}`}
+          >
+            <div className="gallery-image-container">
+              <img 
+                src={design.image} 
+                alt={design.title}
+                className="gallery-image"
+                loading="lazy"
+              />
+              <div className="gallery-overlay">
+                <h3 className="gallery-title">{design.title}</h3>
+                <span className="gallery-category">{design.category}</span>
+              </div>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+)}
+
+{/* Individual Design Modal */}
+{isModalOpen && selectedDesign && (
+  <div className="gallery-modal">
+    <div className="gallery-modal-overlay" onClick={closeModal}></div>
+    <div className="gallery-modal-content">
+      <button 
+        className="gallery-modal-close"
+        onClick={closeModal}
+        aria-label="Close modal"
+      >
+        <X className="w-6 h-6" />
+      </button>
+      <div className="gallery-modal-image-container">
+        <img 
+          src={selectedDesign.image} 
+          alt={selectedDesign.title}
+          className="gallery-modal-image"
+        />
+      </div>
+      <div className="gallery-modal-info">
+        <h3 className="gallery-modal-title">{selectedDesign.title}</h3>
+        <span className="gallery-modal-category">{selectedDesign.category}</span>
+        {selectedDesign.description && (
+          <p className="gallery-modal-description">{selectedDesign.description}</p>
+        )}
+      </div>
+    </div>
+  </div>
+)}
 
       {/* Skills Section */}
       <section id="skills" className="section skills-section">
