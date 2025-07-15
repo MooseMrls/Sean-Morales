@@ -368,7 +368,7 @@ const closeProfileModal = () => {
                 className="portfolio-logo-btn"
                 aria-label="View profile"
               >
-                <span className="text-blue-400">Portfolio</span>
+                <span className="portt">Portfolio</span>
               </button>
             </div>
 

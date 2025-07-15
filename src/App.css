@@ -244,6 +244,10 @@ body {
 }
 
 /* Profile Logo Button */
+.portt{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  letter-spacing: 10px;
+}
 .portfolio-logo-btn {
   background: none;
   border: none;
