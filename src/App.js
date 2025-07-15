@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react'; // Added useRef import
 import emailjs from 'emailjs-com';
 import { ChevronDown, Github, Linkedin, Mail, ExternalLink, Code, Palette, Smartphone, Globe, Menu, X, Sun, Moon, ChevronUp } from 'lucide-react';
 import './App.css'; 
@@ -7,13 +7,122 @@ import Duciel from './images/Duciel.jpg';
 import AM from './images/AM.jpg';
 import mapsa from './images/mapsa.jpg'
 
+const useScrollAnimation = () => {
+  const [scrollY, setScrollY] = useState(0);
+  
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  
+  return scrollY;
+};
+
+const useIntersectionObserver = (threshold = 0.1) => {
+  const [isIntersecting, setIntersecting] = useState(false);
+  const ref = useRef();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIntersecting(true);
+        }
+      },
+      { threshold }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, [threshold]);
+
+  return [ref, isIntersecting];
+};
+
+const ScrollReveal = ({ children, className = '', delay = 0, direction = 'up' }) => {
+  const [ref, isIntersecting] = useIntersectionObserver(0.1);
+  
+  const getAnimationClass = () => {
+    switch (direction) {
+      case 'left': return 'scroll-reveal-left';
+      case 'right': return 'scroll-reveal-right';
+      case 'scale': return 'scroll-reveal-scale';
+      case 'fade': return 'scroll-reveal-fade';
+      default: return 'scroll-reveal';
+    }
+  };
+
+  return (
+    <div
+      ref={ref}
+      className={`${getAnimationClass()} ${isIntersecting ? 'revealed' : ''} ${className}`}
+      style={{
+        transitionDelay: `${delay}ms`
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
+const StaggeredReveal = ({ children, className = '', staggerDelay = 100 }) => {
+  const [ref, isIntersecting] = useIntersectionObserver(0.1);
+  
+  return (
+    <div ref={ref} className={className}>
+      {React.Children.map(children, (child, index) => (
+        <div
+          className={`scroll-reveal-stagger ${isIntersecting ? 'revealed' : ''}`}
+          style={{
+            transitionDelay: `${index * staggerDelay}ms`
+          }}
+        >
+          {child}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const ParallaxElement = ({ children, speed = 0.5, className = '' }) => {
+  const scrollY = useScrollAnimation();
+  const [ref, isIntersecting] = useIntersectionObserver(0.1);
+  
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        transform: isIntersecting ? `translateY(${scrollY * speed}px)` : 'translateY(0px)',
+        transition: 'transform 0.1s ease-out'
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
 const App = () => {
+  // All hooks must be declared at the top
   const [activeSection, setActiveSection] = useState('hero');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isNearBottom, setIsNearBottom] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
 
   useEffect(() => {
     // Check for saved theme preference or default to dark mode
@@ -84,6 +193,40 @@ const App = () => {
     });
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    const serviceId = 'service_wsbuoxp';
+    const templateId = 'template_dim6sic';
+    const userId = 'HECJM-eRsITMpWKj5';
+    
+    emailjs.send(serviceId, templateId, {
+      from_name: formData.name,
+      from_email: formData.email,
+      message: formData.message,
+      to_email: 'morales.seanpatrick@gmail.com'
+    }, userId)
+    .then((response) => {
+      alert('Message sent successfully!');
+      setFormData({
+        name: '',
+        email: '',
+        message: ''
+      });
+    }, (error) => {
+      alert('Failed to send message. Please try again later.');
+      console.error('EmailJS error:', error);
+    });
+  };
+
   const skills = [
     { name: 'React', level: 95, color: 'skill-bar-blue-500' },
     { name: 'JavaScript', level: 90, color: 'skill-bar-blue-400' },
@@ -140,46 +283,6 @@ const App = () => {
     }
   ];
 
-const [formData, setFormData] = useState({
-  name: '',
-  email: '',
-  message: ''
-});
-
-const handleChange = (e) => {
-  const { name, value } = e.target;
-  setFormData(prev => ({
-    ...prev,
-    [name]: value
-  }));
-};
-
-const handleSubmit = (e) => {
-  e.preventDefault();
-  
-  const serviceId = 'service_wsbuoxp';
-  const templateId = 'template_dim6sic';
-  const userId = 'HECJM-eRsITMpWKj5';
-  
-  emailjs.send(serviceId, templateId, {
-    from_name: formData.name,
-    from_email: formData.email,
-    message: formData.message,
-    to_email: 'morales.seanpatrick@gmail.com'
-  }, userId)
-  .then((response) => {
-    alert('Message sent successfully!');
-    setFormData({
-      name: '',
-      email: '',
-      message: ''
-    });
-  }, (error) => {
-    alert('Failed to send message. Please try again later.');
-    console.error('EmailJS error:', error);
-  });
-};
-
   return (
     <div className="min-h-screen">
       {/* Navigation */}
@@ -223,13 +326,6 @@ const handleSubmit = (e) => {
               >
                 {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
               </button>
-              
-              {/* <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="mobile-menu-btn"
-              >
-                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button> */}
             </div>
           </div>
         </div>
@@ -255,31 +351,39 @@ const handleSubmit = (e) => {
       {/* Hero Section */}
       <section id="hero" className="hero-section">
         <div className="hero-overlay"></div>
-        <div className="hero-content animate-fade-in">
-          <h1 className="hero-title">
-            Sean Patrick Morales
-          </h1>
-          <p className="hero-subtitle">
-             Web Developer crafting exceptional digital experiences with modern technologies
-          </p>
-          <div className="hero-social-icons">
-            <a href="https://github.com/MooseMrls" className="social-icon">
-              <Github className="w-6 h-6" />
-            </a>
-            <a href="https://www.linkedin.com/in/sean-patrick-morales-22a697268/" className="social-icon">
-              <Linkedin className="w-6 h-6" />
-            </a>
-            <a href="https://mail.google.com/mail/u/3/#inbox?compose=CllgCKCDlKxkWmnzBCVMSZmxdNZFCgGFBsWrbjzSMqphjVNLDvlGTZcrNFMnmWwXpMPDGclrdBV" className="social-icon">
-              <Mail className="w-6 h-6" />
-            </a>
-          </div>
-          <button
-            onClick={() => scrollToSection('about')}
-            className="hero-button"
-          >
-            Get Started
-          </button>
-        </div>
+        <ParallaxElement speed={0.3} className="hero-content animate-fade-in">
+          <ScrollReveal direction="fade" delay={200}>
+            <h1 className="hero-title">
+              Sean Patrick Morales
+            </h1>
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={400}>
+            <p className="hero-subtitle">
+               Web Developer crafting exceptional digital experiences with modern technologies
+            </p>
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={600}>
+            <div className="hero-social-icons">
+              <a href="https://github.com/MooseMrls" className="social-icon">
+                <Github className="w-6 h-6" />
+              </a>
+              <a href="https://www.linkedin.com/in/sean-patrick-morales-22a697268/" className="social-icon">
+                <Linkedin className="w-6 h-6" />
+              </a>
+              <a href="https://mail.google.com/mail/u/3/#inbox?compose=CllgCKCDlKxkWmnzBCVMSZmxdNZFCgGFBsWrbjzSMqphjVNLDvlGTZcrNFMnmWwXpMPDGclrdBV" className="social-icon">
+                <Mail className="w-6 h-6" />
+              </a>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={800}>
+            <button
+              onClick={() => scrollToSection('about')}
+              className="hero-button"
+            >
+              Get Started
+            </button>
+          </ScrollReveal>
+        </ParallaxElement>
         
         <div className="hero-scroll-indicator">
           <ChevronDown className="w-8 h-8 text-gray-400" />
@@ -289,31 +393,35 @@ const handleSubmit = (e) => {
       {/* About Section */}
       <section id="about" className="section">
         <div className="section-container">
-          <div className="section-header">
-            <h2 className="section-title">
-              About Me
-            </h2>
-            <div className="section-divider"></div>
-          </div>
+          <ScrollReveal direction="up" delay={100}>
+            <div className="section-header">
+              <h2 className="section-title">
+                About Me
+              </h2>
+              <div className="section-divider"></div>
+            </div>
+          </ScrollReveal>
           
           <div className="about-grid">
-            <div className="about-text-container">
-              <p className="about-text">
-                I'm a passionate web developer with over 2 years of experience creating 
-                innovative digital solutions.
-              </p>
-              <p className="about-text">
-                My approach combines technical expertise with creative problem-solving to deliver 
-                exceptional user experiences. I'm constantly learning and adapting to new technologies 
-                to stay at the forefront of web development.
-              </p>
-              <div className="about-badges">
-                <span className="about-badge">2+ Years Experience</span>
-                <span className="about-badge">Remote Work</span>
+            <ScrollReveal direction="left" delay={200}>
+              <div className="about-text-container">
+                <p className="about-text">
+                  I'm a passionate web developer with over 2 years of experience creating 
+                  innovative digital solutions.
+                </p>
+                <p className="about-text">
+                  My approach combines technical expertise with creative problem-solving to deliver 
+                  exceptional user experiences. I'm constantly learning and adapting to new technologies 
+                  to stay at the forefront of web development.
+                </p>
+                <div className="about-badges">
+                  <span className="about-badge">2+ Years Experience</span>
+                  <span className="about-badge">Remote Work</span>
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
             
-            <div className="services-grid">
+            <StaggeredReveal className="services-grid" staggerDelay={150}>
               {services.map((service, index) => (
                 <div key={index} className="service-card">
                   <div className="service-icon">
@@ -323,7 +431,7 @@ const handleSubmit = (e) => {
                   <p className="service-description">{service.description}</p>
                 </div>
               ))}
-            </div>
+            </StaggeredReveal>
           </div>
         </div>
       </section>
@@ -331,14 +439,16 @@ const handleSubmit = (e) => {
       {/* Projects Section */}
       <section id="projects" className="section">
         <div className="section-container">
-          <div className="section-header">
-            <h2 className="section-title">
-              Featured Projects
-            </h2>
-            <div className="section-divider"></div>
-          </div>
+          <ScrollReveal direction="up" delay={100}>
+            <div className="section-header">
+              <h2 className="section-title">
+                Featured Projects
+              </h2>
+              <div className="section-divider"></div>
+            </div>
+          </ScrollReveal>
           
-          <div className="projects-grid">
+          <StaggeredReveal className="projects-grid" staggerDelay={200}>
             {projects.map((project, index) => (
               <div key={index} className="project-card">
                 <div className="project-image-container">
@@ -375,119 +485,127 @@ const handleSubmit = (e) => {
                 </div>
               </div>
             ))}
-          </div>
+          </StaggeredReveal>
         </div>
       </section>
 
       {/* Skills Section */}
       <section id="skills" className="section skills-section">
         <div className="section-container">
-          <div className="section-header">
-            <h2 className="section-title">
-              Skills & Technologies
-            </h2>
-            <div className="section-divider"></div>
-          </div>
+          <ScrollReveal direction="up" delay={100}>
+            <div className="section-header">
+              <h2 className="section-title">
+                Skills & Technologies
+              </h2>
+              <div className="section-divider"></div>
+            </div>
+          </ScrollReveal>
           
-          <div className="skills-grid">
+          <StaggeredReveal className="skills-grid" staggerDelay={100}>
             {skills.map((skill, index) => (
               <div key={index} className="skill-item">
                 <span className="skill-name">{skill.name}</span>
               </div>
             ))}
-          </div>
+          </StaggeredReveal>
         </div>
       </section>
 
-{/* Contact Section */}
+      {/* Contact Section */}
       <section id="contact" className="section contact-section">
         <div className="contact-container">
-          <div className="section-header">
-            <h2 className="section-title">
-              Get In Touch
-            </h2>
-            <div className="section-divider"></div>
-            <p className="contact-description">
-              Ready to start your next project? Let's collaborate and create something amazing together.
-            </p>
-          </div>
+          <ScrollReveal direction="up" delay={100}>
+            <div className="section-header">
+              <h2 className="section-title">
+                Get In Touch
+              </h2>
+              <div className="section-divider"></div>
+              <p className="contact-description">
+                Ready to start your next project? Let's collaborate and create something amazing together.
+              </p>
+            </div>
+          </ScrollReveal>
           
           <div className="contact-grid">
-            <div className="contact-info-container">
-              <div className="contact-info-item">
-                <div className="contact-icon">
-                  <Mail className="w-6 h-6" />
+            <ScrollReveal direction="left" delay={200}>
+              <div className="contact-info-container">
+                <div className="contact-info-item">
+                  <div className="contact-icon">
+                    <Mail className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="contact-info-title">Email</h3>
+                    <p className="contact-info-text">morales.seanpatrick@gmail.com</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="contact-info-title">Email</h3>
-                  <p className="contact-info-text">morales.seanpatrick@gmail.com</p>
+                
+                <div className="contact-info-item">
+                  <div className="contact-icon">
+                    <Github className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="contact-info-title">GitHub</h3>
+                    <p className="contact-info-text">github.com/moosemorales</p>
+                  </div>
+                </div>
+                
+                <div className="contact-info-item">
+                  <div className="contact-icon">
+                    <Linkedin className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="contact-info-title">LinkedIn</h3>
+                    <p className="contact-info-text">linkedin.com/in/sean-patrick-morales</p>
+                  </div>
                 </div>
               </div>
-              
-              <div className="contact-info-item">
-                <div className="contact-icon">
-                  <Github className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="contact-info-title">GitHub</h3>
-                  <p className="contact-info-text">github.com/moosemorales</p>
-                </div>
-              </div>
-              
-              <div className="contact-info-item">
-                <div className="contact-icon">
-                  <Linkedin className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="contact-info-title">LinkedIn</h3>
-                  <p className="contact-info-text">linkedin.com/in/sean-patrick-morales</p>
-                </div>
-              </div>
-            </div>
+            </ScrollReveal>
             
-            <div className="contact-form-container">
-              <form onSubmit={handleSubmit} className="contact-form">
-                <div>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Your Name"
-                    className="contact-input"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Your Email"
-                    className="contact-input"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <textarea
-                    name="message"
-                    placeholder="Your Message"
-                    rows={4}
-                    className="contact-input contact-textarea"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  className="contact-button"
-                >
-                  Send Message
-                </button>
-              </form>
-            </div>
+            <ScrollReveal direction="right" delay={400}>
+              <div className="contact-form-container">
+                <form onSubmit={handleSubmit} className="contact-form">
+                  <div>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Your Name"
+                      className="contact-input"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Your Email"
+                      className="contact-input"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <textarea
+                      name="message"
+                      placeholder="Your Message"
+                      rows={4}
+                      className="contact-input contact-textarea"
+                      value={formData.message}
+                      onChange={handleChange}
+                      required
+                    ></textarea>
+                  </div>
+                  <button
+                    type="submit"
+                    className="contact-button"
+                  >
+                    Send Message
+                  </button>
+                </form>
+              </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -495,9 +613,11 @@ const handleSubmit = (e) => {
       {/* Footer */}
       <footer className="footer">
         <div className="footer-container">
-          <p className="footer-text">
-            © 2025 Sean Patrick Morales. All rights reserved.
-          </p>
+          <ScrollReveal direction="fade" delay={100}>
+            <p className="footer-text">
+              © 2025 Sean Patrick Morales. All rights reserved.
+            </p>
+          </ScrollReveal>
         </div>
       </footer>
 
