@@ -1393,7 +1393,14 @@ body {
   display: flex;
   left: 0;
   bottom: 1;
-  gap: 50px;
+  gap: 80px;
+}
+
+@media screen and (max-width: 1250px) {
+  .footer-animation {
+  display: none;
+  }
+  
 }
 
 /* Scroll to Top Button */
@@ -1550,6 +1557,12 @@ textarea:focus-visible {
 }
 
 /* Gallery Section */
+ .gallery-button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 .gallery-button {
   background: var(--gradient-button);
   color: #ffffff;
@@ -1562,8 +1575,6 @@ textarea:focus-visible {
   cursor: pointer;
   box-shadow: var(--shadow-button);
   text-decoration: none;
-  display: inline-block;
-  margin-left: 505px;
 }
 
 .gal-section {
@@ -1904,41 +1915,9 @@ textarea:focus-visible {
   box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
 }
 
-/* Responsive adjustments */
-@media (max-width: 1080px) {
-  .gallery-button {
-     margin-left: 420px;
-    }
-}
+ /* Responsive adjustments */
 
-@media (max-width: 774px) {
-  .gallery-button {
-     margin-left: 270px;
-    }
-}
-@media (max-width: 850px) {
-  .gallery-button {
-     margin-left: 310px;
-    }
-}
-
-@media (max-width: 768px) {
-  .gallery-button {
-  background: var(--gradient-button);
-  color: #ffffff;
-  padding: 1rem 2.5rem;
-  border-radius: 50px;
-  font-size: 1.125rem;
-  font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: none;
-  cursor: pointer;
-  box-shadow: var(--shadow-button);
-  text-decoration: none;
-  display: inline-block;
-  margin-left: 5px;
-
-}
+@media (max-width: 768px) { 
 
  .gallery-button-container {
     display: flex;

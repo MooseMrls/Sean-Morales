@@ -873,20 +873,14 @@ const closeProfileModal = () => {
         animationData={amongus}
         loop={true}
         autoplay={true}
-        style={{ height: 100,  }}
+        style={{ height: 100, paddingLeft: 40  }}
       />
       <Lottie 
         animationData={mario}
         loop={true}
         autoplay={true}
-        style={{ height: 180, top: -38, left: 28, position: 'absolute' }}
+        style={{ height: 180, top: -38, left: 38, paddingLeft: 20, position: 'absolute' }}
       />
-      {/* <Lottie 
-        animationData={arcade}
-        loop={true}
-        autoplay={true}
-        style={{ height: 80 }}
-      /> */}
        <Lottie 
         animationData={pp}
         loop={true}
