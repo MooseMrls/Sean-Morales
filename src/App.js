@@ -12,6 +12,8 @@ import bul from './images/bulcard.png';
 import base from './images/base.png'; 
 import gw from './images/gw.png';
 import rh from './images/rh.png';
+import fallin from './images/fallin.jpeg'
+import whatif from './images/whatif.jpeg'
 
 import animationData from './animations/Batman.json'; 
 import amongus from './animations/amongus.json';
@@ -377,12 +379,12 @@ const closeProfileModal = () => {
   ];
 
   const designs = [
-  { id: 1, image: AM, title: 'Aquamom Water Station', category: '' },
+  { id: 1, image: fallin, title: 'Fallin In Love', category: '' },
   { id: 2, image: bul, title: 'Bulldogs Card Sticker', category: '' },
   { id: 3, image: base, title: 'The Basement', category: '' },
   { id: 4, image: rh, title: 'Royal Hooligans', category: '' },
   { id: 5, image: gw, title: 'Goldwings Insurance Agency', category: '' },
-  // { id: 6, image: design6, title: 'Design 6', category: 'Digital' },
+  { id: 6, image: whatif, title: 'What If', category: '' },
   // Add more designs as needed
 ];
 
