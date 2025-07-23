@@ -1680,8 +1680,9 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 0; /* Remove padding on mobile */
   animation: fadeIn 0.3s ease;
+  overflow: auto; /* Add scrolling if content is too tall */
 }
 
 @keyframes fadeIn {
@@ -1919,6 +1920,10 @@ textarea:focus-visible {
 
 @media (max-width: 768px) { 
 
+    .gallery-item {
+    aspect-ratio: 1/1; /* Square items */
+  }
+
  .gallery-button-container {
     display: flex;
     justify-content: center;
@@ -1930,7 +1935,9 @@ textarea:focus-visible {
   }
   
   .gallery-modal-content {
-    max-height: 95vh;
+    height: 100vh;
+    max-width: 100vw;
+    border-radius: 0;
   }
   
   .gallery-modal-full {

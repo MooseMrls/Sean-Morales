@@ -3,6 +3,8 @@ import emailjs from 'emailjs-com';
 import Lottie from 'lottie-react';
 import { ChevronDown, Github, Linkedin, Mail, ExternalLink, Code, Palette, Smartphone, Globe, Menu, X, Sun, Moon, ChevronUp, User } from 'lucide-react';
 import './App.css'; 
+import './loading/Preloader.css';
+import Preloader from './loading/Preloader';
 
 import Duciel from './images/Duciel.jpg';
 import AM from './images/AM.jpg';
@@ -140,12 +142,21 @@ const App = () => {
   const [isClosing, setIsClosing] = useState(false);
   const [isGalleryModalClosing, setIsGalleryModalClosing] = useState(false);
   const [isDesignModalClosing, setIsDesignModalClosing] = useState(false);
+  //  const [isLoading, setIsLoading] = useState(true);
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: ''
   });
+
+  //   useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 6500); // Match this with your preloader duration
+
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -311,6 +322,10 @@ const closeProfileModal = () => {
       document.body.style.overflow = 'unset';
     };
   }, [isProfileModalOpen]);
+
+  //   if (isLoading) {
+  //   return <Preloader onLoadingComplete={() => setIsLoading(false)} />;
+  // }
 
   // if (!isProfileModalOpen) return null;
 
@@ -500,7 +515,7 @@ const closeProfileModal = () => {
           </ScrollReveal>
           <ScrollReveal direction="up" delay={400}>
             <p className="hero-subtitle">
-               Web Developer crafting exceptional digital experiences with modern technologies
+               Coding beautiful solutions that connect users and technology.
             </p>
           </ScrollReveal>
           <ScrollReveal direction="up" delay={600}>
@@ -547,17 +562,16 @@ const closeProfileModal = () => {
             <ScrollReveal direction="left" delay={200}>
               <div className="about-text-container">
                 <p className="about-text">
-                  I'm a passionate web developer with over 2 years of experience creating 
-                  innovative digital solutions.
+                  I’m a software engineer and IT specialist who enjoys building practical, user-friendly digital experiences that solve real problems.
                 </p>
                 <p className="about-text">
-                  My approach combines technical expertise with creative problem-solving to deliver 
-                  exceptional user experiences. I'm constantly learning and adapting to new technologies 
-                  to stay at the forefront of web development.
+                  From writing clean code to managing system infrastructure, I focus on creating efficient, scalable solutions. I’m always exploring new technologies to stay sharp and deliver my best work.
                 </p>
+
                 <div className="about-badges">
-                  <span className="about-badge">2+ Years Experience</span>
-                  <span className="about-badge">Remote Work</span>
+                  <span className="about-badge">Full Stack Developer</span>
+                  <span className='about-badge'>Systems Administrator</span>
+                  <span className='about-badge'>Goal Oriented</span>
                 </div>
               </div>
             </ScrollReveal>
