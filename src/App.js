@@ -16,6 +16,7 @@ import gw from './images/gw.png';
 import rh from './images/rh.png';
 import fallin from './images/fallin.jpeg'
 import whatif from './images/whatif.jpeg'
+import weather from './images/weather.jpg';
 
 import animationData from './animations/Batman.json'; 
 import amongus from './animations/amongus.json';
@@ -372,6 +373,13 @@ const closeProfileModal = () => {
       image: nugits,
       github: 'https://github.com/MooseMrls',
       live: 'https://www.nu-gits.com/'
+    },
+    {
+      title: 'Weather Mobile App',
+      description: 'A simple yet powerful weather application that provides real-time weather updates and forecasts. Built with React Native, it fetches data from a reliable weather API to deliver accurate information on current conditions, hourly forecasts, and extended weather outlooks.',
+      tech: ['React Native', 'OpenMeteo API'],
+      image: weather,
+      github:'https://github.com/MooseMrls'
     }
   ];
 
@@ -565,7 +573,7 @@ const closeProfileModal = () => {
                   I’m a software engineer and IT specialist who enjoys building practical, user-friendly digital experiences that solve real problems.
                 </p>
                 <p className="about-text">
-                  From writing clean code to managing system infrastructure, I focus on creating efficient, scalable solutions. I’m always exploring new technologies to stay sharp and deliver my best work.
+                  From writing clean code to managing system infrastructure, I focus on creating efficient and scalable solutions. I’m always exploring new technologies to stay sharp and deliver my best work.
                 </p>
 
                 <div className="about-badges">
