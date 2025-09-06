@@ -396,7 +396,7 @@ const closeProfileModal = () => {
 
   const projects = [
     {
-      title: 'E-Commerce Platform',
+      title: 'Du Ciel Fragrance',
       description: 'Modern e-commerce platform built exclusively for perfume enthusiasts and sellers. Designed to deliver a seamless shopping experience, this allows customers to browse, order, and review premium fragrances—while providing admins with full control over inventory, sales records, and performance reports.',
       tech: ['React', 'Node.js', 'MongoDB'],
       image: Duciel,
@@ -405,7 +405,7 @@ const closeProfileModal = () => {
       isPrivate: false 
     },
     {
-      title: 'Management System',
+      title: 'Aquamom Management System',
       description: 'An all-in-one management system designed specifically for water refilling stations. It offers seamless tracking of daily sales, maintenance schedules, and customer transactions—empowering water station owners and staff to run operations smoothly and efficiently.',
       tech: ['React', 'Express', 'MongoDB'],
       image: AM,
@@ -415,7 +415,7 @@ const closeProfileModal = () => {
       previewImages: [am1, am2, am3, am4, am5, am6, am7] 
     },
     {
-      title: 'Management App',
+      title: 'MaPSA Management System',
       description: 'A comprehensive employee management system designed to streamline daily time tracking and workforce administration. Ideal for small to medium-sized organizations, the app allows HR personnel and managers to efficiently monitor employee attendance, file and approve leave requests, and manage employee records.',
       tech: ['Node.js', 'Express', 'Bible API', 'HTML', 'CSS'],
       image: mapsa,
@@ -425,7 +425,7 @@ const closeProfileModal = () => {
       previewImages: [map, map2, map3, map4] 
     },
       {
-      title: 'Guidance Web App',
+      title: 'NU-GITS',
       description: 'A digital platform designed to enhance student support through a blend of emotional, academic, and personal growth tools. Built with a modern, user-friendly interface, the system empowers guidance counselors and students to connect meaningfully in a safe and supportive environment.',
       tech: ['Python', 'MongoDB'],
       image: nugits,
