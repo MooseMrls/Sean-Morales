@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'; 
 import emailjs from 'emailjs-com';
 import Lottie from 'lottie-react';
-import { ChevronDown, Github, Linkedin, Mail, ExternalLink, Code, Palette, Smartphone, Globe, Menu, X, Sun, Moon, ChevronUp, User } from 'lucide-react';
+import { ChevronDown, Github, Linkedin, Mail, ExternalLink, Code, Palette, Smartphone, Globe, Menu, X, Sun, Moon, ChevronUp, User, Eye } from 'lucide-react';
 import './App.css'; 
 import './loading/Preloader.css';
 import Preloader from './loading/Preloader';
@@ -17,6 +17,20 @@ import rh from './images/rh.png';
 import fallin from './images/fallin.jpeg'
 import whatif from './images/whatif.jpeg'
 import weather from './images/weather.jpg';
+
+import am1 from './images/am/am1.png';
+import am2 from './images/am/am2.png';
+import am3 from './images/am/am3.png';
+import am4 from './images/am/am4.png';
+import am5 from './images/am/am5.png';
+import am6 from './images/am/am6.png';
+import am7 from './images/am/am7.png';
+import wet from './images/weather/wet.jpeg';
+import wet2 from './images/weather/wet2.jpeg';
+import map from './images/mapsa/map1.png';
+import map2 from './images/mapsa/map2.png';
+import map3 from './images/mapsa/map3.png';
+import map4 from './images/mapsa/map4.png';
 
 import animationData from './animations/Batman.json'; 
 import amongus from './animations/amongus.json';
@@ -143,6 +157,13 @@ const App = () => {
   const [isClosing, setIsClosing] = useState(false);
   const [isGalleryModalClosing, setIsGalleryModalClosing] = useState(false);
   const [isDesignModalClosing, setIsDesignModalClosing] = useState(false);
+  const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
+  const [selectedPreview, setSelectedPreview] = useState(null);
+  const [isPreviewModalClosing, setIsPreviewModalClosing] = useState(false);
+  const [isPreviewZoomOpen, setIsPreviewZoomOpen] = useState(false);
+  const [zoomedImage, setZoomedImage] = useState(null);
+  const [isPreviewZoomClosing, setIsPreviewZoomClosing] = useState(false);
+
   //  const [isLoading, setIsLoading] = useState(true);
 
   const [formData, setFormData] = useState({
@@ -258,6 +279,34 @@ const App = () => {
     });
   };
 
+  const openPreviewModal = (project) => {
+    setSelectedPreview(project);
+    setIsPreviewModalOpen(true);
+  };
+  
+  const closePreviewModal = () => {
+    setIsPreviewModalClosing(true);
+    setTimeout(() => {
+      setIsPreviewModalOpen(false);
+      setIsPreviewModalClosing(false);
+      setSelectedPreview(null);
+    }, 300);
+  };
+
+  const openPreviewZoom = (imageSrc) => {
+    setZoomedImage(imageSrc);
+    setIsPreviewZoomOpen(true);
+  };
+  
+  const closePreviewZoom = () => {
+    setIsPreviewZoomClosing(true);
+    setTimeout(() => {
+      setIsPreviewZoomOpen(false);
+      setIsPreviewZoomClosing(false);
+      setZoomedImage(null);
+    }, 300);
+  };
+
 // Modal functions
 const closeGalleryModal = () => {
   setIsGalleryModalClosing(true);
@@ -336,8 +385,12 @@ const closeProfileModal = () => {
     { name: 'Node.js', level: 85, color: 'skill-bar-blue-600' },
     { name: 'TypeScript', level: 80, color: 'skill-bar-blue-500' },
     { name: 'HTML/CSS', level: 90, color: 'skill-bar-blue-600' },
+    { name: 'Flutter', level: 75, color: 'skill-bar-blue-400' },
+    { name: 'Python', level: 80, color: 'skill-bar-blue-500' },
+    { name : 'Express.js', level: 85, color: 'skill-bar-blue-600' },
+    { name: 'MongoDB', level: 80, color: 'skill-bar-blue-400' },
+    { name: 'SQL', level: 75, color: 'skill-bar-blue-500' },
     { name: 'Multimedia Arts'},
-    { name: 'Graphic Design'},
     { name: 'IT Specialist'}
   ];
 
@@ -348,7 +401,8 @@ const closeProfileModal = () => {
       tech: ['React', 'Node.js', 'MongoDB'],
       image: Duciel,
       github: 'https://github.com/MooseMrls',
-      live: 'https://duciel.vercel.app/'
+      live: 'https://duciel.vercel.app/',
+      isPrivate: false 
     },
     {
       title: 'Management System',
@@ -356,7 +410,9 @@ const closeProfileModal = () => {
       tech: ['React', 'Express', 'MongoDB'],
       image: AM,
       github: 'https://github.com/MooseMrls',
-      live: 'https://aquamom.vercel.app/'
+      live: '',
+      isPrivate: true,
+      previewImages: [am1, am2, am3, am4, am5, am6, am7] 
     },
     {
       title: 'Management App',
@@ -364,7 +420,9 @@ const closeProfileModal = () => {
       tech: ['Node.js', 'Express', 'Bible API', 'HTML', 'CSS'],
       image: mapsa,
       github: 'https://github.com/MooseMrls',
-      live: 'https://mapsa.onrender.com/home.html'
+      live: '',
+      isPrivate: true,
+      previewImages: [map, map2, map3, map4] 
     },
       {
       title: 'Guidance Web App',
@@ -379,7 +437,9 @@ const closeProfileModal = () => {
       description: 'A simple yet powerful weather application that provides real-time weather updates and forecasts. Built with React Native, it fetches data from a reliable weather API to deliver accurate information on current conditions, hourly forecasts, and extended weather outlooks.',
       tech: ['React Native', 'OpenMeteo API'],
       image: weather,
-      github:'https://github.com/MooseMrls'
+      github:'https://github.com/MooseMrls',
+      isPrivate: true,
+      previewImages: [wet, wet2] 
     }
   ];
 
@@ -640,10 +700,20 @@ const closeProfileModal = () => {
                       <Github className="w-4 h-4" />
                       <span>Code</span>
                     </a>
-                    <a href={project.live} className="project-link">
-                      <ExternalLink className="w-4 h-4" />
-                      <span>Live</span>
-                    </a>
+                    {project.live && !project.isPrivate ? (
+                      <a href={project.live} className="project-link">
+                        <ExternalLink className="w-4 h-4" />
+                        <span>Live</span>
+                      </a>
+                    ) : (
+                      <button 
+                        onClick={() => openPreviewModal(project)}
+                        className="project-link preview-button"
+                      >
+                        <Eye className="w-4 h-4" /> 
+                        <span>Preview</span>
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -651,6 +721,72 @@ const closeProfileModal = () => {
           </StaggeredReveal>
         </div>
       </section>
+
+  {/* Web Modal */}
+{isPreviewModalOpen && selectedPreview && (
+  <div className={`gallery-modal ${isPreviewModalClosing ? 'closing' : ''}`}>
+    <div 
+      className="gallery-modal-overlay" 
+      onClick={closePreviewModal}
+    ></div>
+    <div className="gallery-modal-content">
+      <button 
+        className="gallery-modal-close"
+        onClick={closePreviewModal}
+        aria-label="Close preview"
+      >
+        <X className="w-6 h-6" />
+      </button>
+      
+      <div className="gallery-modal-header">
+        <h3 className="gallery-modal-title">{selectedPreview.title} Preview</h3>
+        <p className="gallery-modal-subtitle">Website is currently private</p>
+      </div>
+      
+      <div className="preview-images-container">
+        {selectedPreview.previewImages && selectedPreview.previewImages.length > 0 ? (
+          selectedPreview.previewImages.map((image, index) => (
+            <div key={index} className="preview-image-wrapper">
+              <img 
+                src={image} 
+                alt={`${selectedPreview.title} preview ${index + 1}`}
+                className="preview-image"
+                onClick={() => openPreviewZoom(image)}
+                style={{ cursor: 'zoom-in' }}
+              />
+            </div>
+          ))
+        ) : (
+          <div className="no-preview-message">
+            <Eye className="w-12 h-12 mb-4" />
+            <p>Preview images coming soon</p>
+            <p className="text-sm opacity-70 mt-2">This project is currently in private development</p>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+)}
+
+{isPreviewZoomOpen && zoomedImage && (
+  <div className={`preview-zoom-modal ${isPreviewZoomClosing ? 'closing' : ''}`}>
+    <div className="preview-zoom-overlay" onClick={closePreviewZoom}></div>
+    <div className="preview-zoom-content">
+      <button 
+        className="preview-zoom-close"
+        onClick={closePreviewZoom}
+        aria-label="Close zoomed preview"
+      >
+        <X className="w-6 h-6" />
+      </button>
+      <img 
+        src={zoomedImage} 
+        alt="Zoomed preview"
+        className="preview-zoom-img"
+      />
+    </div>
+  </div>
+)}
 
 {/* Gallery Modal */}
 <section id="gallery" className="gal-section">
