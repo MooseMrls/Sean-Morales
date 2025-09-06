@@ -14,9 +14,10 @@ import bul from './images/bulcard.png';
 import base from './images/base.png'; 
 import gw from './images/gw.png';
 import rh from './images/rh.png';
-import fallin from './images/fallin.jpeg'
-import whatif from './images/whatif.jpeg'
+import fallin from './images/fallin.jpeg';
+import whatif from './images/whatif.jpeg';
 import weather from './images/weather.jpg';
+import mhdc from './images/mhdc.jpg';
 
 import am1 from './images/am/am1.png';
 import am2 from './images/am/am2.png';
@@ -31,6 +32,15 @@ import map from './images/mapsa/map1.png';
 import map2 from './images/mapsa/map2.png';
 import map3 from './images/mapsa/map3.png';
 import map4 from './images/mapsa/map4.png';
+import mhdc1 from './images/mhdc/mhdc1.png';
+import mhdc2 from './images/mhdc/mhdc2.png';
+import mhdc3 from './images/mhdc/mhdc3.png';
+import mhdc4 from './images/mhdc/mhdc4.png';
+import mhdc5 from './images/mhdc/mhdc5.png';
+import mhdc6 from './images/mhdc/mhdc6.png';
+import mhdc7 from './images/mhdc/mhdc7.png';
+import mhdc8 from './images/mhdc/mhdc8.png';
+import mhdc9 from './images/mhdc/mhdc9.png';
 
 import animationData from './animations/Batman.json'; 
 import amongus from './animations/amongus.json';
@@ -391,7 +401,8 @@ const closeProfileModal = () => {
     { name: 'MongoDB', level: 80, color: 'skill-bar-blue-400' },
     { name: 'SQL', level: 75, color: 'skill-bar-blue-500' },
     { name: 'Multimedia Arts'},
-    { name: 'IT Specialist'}
+    { name: 'IT Specialist'},
+    { name: 'Github'},
   ];
 
   const projects = [
@@ -440,6 +451,15 @@ const closeProfileModal = () => {
       github:'https://github.com/MooseMrls',
       isPrivate: true,
       previewImages: [wet, wet2] 
+    },
+    {
+      title: 'MaPSA Holistic Development Center',
+      description: 'A custom-built digital platform designed to streamline the operations of the retreat house. It provides an all-in-one solution for managing reservations, schedules, guest information, and facility usage, ensuring a seamless experience for both staff and visitors.',
+      tech: ['React', 'Express', 'MongoDB'],
+      image: mhdc,
+      github:'https://github.com/MooseMrls',
+      isPrivate: true,
+      previewImages: [mhdc1, mhdc2, mhdc3, mhdc4, mhdc5, mhdc6, mhdc7, mhdc8, mhdc9] 
     }
   ];
 
