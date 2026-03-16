@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'; 
 import emailjs from 'emailjs-com';
 import Lottie from 'lottie-react';
-import { ChevronDown, Github, Linkedin, Mail, ExternalLink, Code, Palette, Globe, X, Sun, Moon, ChevronUp, Eye, ArrowRight, ArrowLeft, ArrowUp, ArrowDown, MoveRight } from 'lucide-react';
+import { ChevronDown, Github, Linkedin, Mail, ExternalLink, Code, Palette, Globe, X, Sun, Moon, ChevronUp, Eye, ArrowRight, ArrowLeft } from 'lucide-react';
 import './App.css'; 
 import './loading/Preloader.css';
 
@@ -102,9 +102,10 @@ const useIntersectionObserver = (threshold = 0.1) => {
       observer.observe(ref.current);
     }
 
+    const currentRef = ref.current;
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, [threshold]);
@@ -392,10 +393,6 @@ const closeModal = () => {
     setIsDesignModalClosing(false);
     setSelectedDesign(null);
   }, 300);
-};
-
-const openProfileModal = () => {
-  setIsProfileModalOpen(true);
 };
 
 const closeProfileModal = () => {
