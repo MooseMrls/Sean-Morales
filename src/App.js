@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'; 
 import emailjs from 'emailjs-com';
 import Lottie from 'lottie-react';
-import { ChevronDown, Github, Linkedin, Mail, ExternalLink, Code, Palette, Smartphone, Globe, Menu, X, Sun, Moon, ChevronUp, User, Eye } from 'lucide-react';
+import { ChevronDown, Github, Linkedin, Mail, ExternalLink, Code, Palette, Globe, X, Sun, Moon, ChevronUp, Eye, ArrowRight, ArrowLeft, ArrowUp, ArrowDown, MoveRight } from 'lucide-react';
 import './App.css'; 
 import './loading/Preloader.css';
-import Preloader from './loading/Preloader';
 
 import Duciel from './images/Duciel.jpg';
 import AM from './images/AM.jpg';
@@ -18,6 +17,8 @@ import fallin from './images/fallin.jpeg';
 import whatif from './images/whatif.jpeg';
 import weather from './images/weather.jpg';
 import mhdc from './images/mhdc.jpg';
+import claw from './images/Claw.jpg';
+import swift from './images/swift.png';
 
 import am1 from './images/am/am1.png';
 import am2 from './images/am/am2.png';
@@ -42,13 +43,34 @@ import mhdc7 from './images/mhdc/mhdc7.png';
 import mhdc8 from './images/mhdc/mhdc8.png';
 import mhdc9 from './images/mhdc/mhdc9.png';
 
+import reg1 from './images/mreg/reg1.png';
+import reg2 from './images/mreg/reg2.png';
+import reg3 from './images/mreg/reg3.png';
+import reg4 from './images/mreg/reg4.png';
+import reg5 from './images/mreg/reg5.png';
+import reg6 from './images/mreg/reg6.png';
+
+import clev1 from './images/clev/clev1.png';
+import clev2 from './images/clev/clev2.png';
+import clev3 from './images/clev/clev3.png';
+import clev4 from './images/clev/clev4.png';
+import clev5 from './images/clev/clev5.png';
+import clev6 from './images/clev/clev6.png';
+import clev7 from './images/clev/clev7.png';
+import clev8 from './images/clev/clev8.png';
+import Clev3 from './images/Clev.3.png';
+
 import animationData from './animations/Batman.json'; 
 import amongus from './animations/amongus.json';
 import mario from './animations/mario.json';
-import arcade from './animations/arcade.json';
 import pp from './animations/Paper Plane.json';
 
 import profileImage from './images/me.jpg'; 
+
+
+
+
+
 
 const useScrollAnimation = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -153,6 +175,38 @@ const ParallaxElement = ({ children, speed = 0.5, className = '' }) => {
   );
 };
 
+// ── TiltCard (3D hover) ───────────────────────────────────
+const TiltCard = ({ children, className = '' }) => {
+  const cardRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale(1.02)`;
+  };
+
+  const handleMouseLeave = () => {
+    if (cardRef.current) {
+      cardRef.current.style.transform = 'perspective(700px) rotateY(0deg) rotateX(0deg) scale(1)';
+    }
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      className={className}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ transition: 'transform 0.15s ease', willChange: 'transform' }}
+    >
+      {children}
+    </div>
+  );
+};
+
 const App = () => {
   const [activeSection, setActiveSection] = useState('hero');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -174,13 +228,13 @@ const App = () => {
   const [zoomedImage, setZoomedImage] = useState(null);
   const [isPreviewZoomClosing, setIsPreviewZoomClosing] = useState(false);
 
-  //  const [isLoading, setIsLoading] = useState(true);
-
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: ''
   });
+
+  // ── Animation hooks ───────────────────────────────────
 
   //   useEffect(() => {
   //   const timer = setTimeout(() => {
@@ -217,7 +271,7 @@ const App = () => {
     const isNearBottom = scrollPosition + windowHeight >= documentHeight - 200;
     setIsNearBottom(isNearBottom);
     
-    const sections = ['hero', 'about', 'skills', 'projects', 'gallery', 'contact'];
+    const sections = ['hero', 'about', 'skills', 'certifications', 'projects', 'gallery', 'contact'];
     const currentSection = sections.find(section => {
       const element = document.getElementById(section);
       if (element) {
@@ -341,46 +395,27 @@ const closeModal = () => {
 };
 
 const openProfileModal = () => {
-  // Scroll to top first
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
-
-  // Wait for scroll to complete (approximately 500ms)
-  setTimeout(() => {
-    setIsProfileModalOpen(true);
-  }, 500);
+  setIsProfileModalOpen(true);
 };
 
 const closeProfileModal = () => {
-    setIsClosing(true);
-    
-    // Wait for animation to complete before hiding modal
-    setTimeout(() => {
-      setIsProfileModalOpen(false);
-      setIsClosing(false);
-    }, 300); // 300ms matches the animation duration
-  };
+  setIsClosing(true);
+  setTimeout(() => {
+    setIsProfileModalOpen(false);
+    setIsClosing(false);
+  }, 250);
+};
 
-  // Handle ESC key press
+  // Close popover when clicking outside
   useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape' && isProfileModalOpen) {
+    if (!isProfileModalOpen) return;
+    const handleClick = (e) => {
+      if (!e.target.closest('.nav-logo')) {
         closeProfileModal();
       }
     };
-
-    if (isProfileModalOpen) {
-      document.addEventListener('keydown', handleEscape);
-      // Prevent body scroll when modal is open
-      document.body.style.overflow = 'hidden';
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
-    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
   }, [isProfileModalOpen]);
 
   //   if (isLoading) {
@@ -460,7 +495,43 @@ const closeProfileModal = () => {
       github:'https://github.com/MooseMrls',
       isPrivate: true,
       previewImages: [mhdc1, mhdc2, mhdc3, mhdc4, mhdc5, mhdc6, mhdc7, mhdc8, mhdc9] 
-    }
+    },
+    {
+      title: 'MaPSA Online Registration',
+      description: 'A streamlined portal for user registration and admin operations.',
+      tech: ['React', 'Express', 'MongoDB'],
+      image: mapsa,
+      github:'https://github.com/MooseMrls',
+      isPrivate: true,
+      previewImages: [reg1, reg2, reg3, reg4, reg5, reg6] 
+    },
+    {
+      title: 'Cleverly - Attendance System',
+      description: 'A smart attendance system for students and faculty, combining RFID and facial recognition to ensure fast, accurate, and secure identity verification.',
+      tech: ['React', 'Express', 'MongoDB'],
+      image: Clev3,
+      github:'https://github.com/MooseMrls',
+      isPrivate: true,
+      previewImages: [clev1, clev2, clev3, clev4, clev5, clev6, clev7, clev8] 
+    },
+    {
+      title: 'Payroll & Leave Management System',
+      description: 'A web-based system that simplifies employee payroll processing and leave management. It allows administrators to manage employee records, calculate salaries, and track leave requests efficiently, improving accuracy and overall workforce management.',
+      tech: ['React', 'Express', 'Node.js', 'MongoDB'],
+      image: swift,
+      github:'https://github.com/MooseMrls',
+      isPrivate: true,
+      previewImages: [] 
+    },
+    {
+      title: 'Claw Machine',
+      description: 'A simple claw machine game.',
+      tech: ['Javascript'],
+      image: claw,
+      github: 'https://github.com/MooseMrls',
+      live: 'https://clawmachine-vert.vercel.app/',
+      isPrivate: false 
+    },
   ];
 
   const services = [
@@ -488,8 +559,66 @@ const closeProfileModal = () => {
   { id: 4, image: rh, title: 'Royal Hooligans', category: '' },
   { id: 5, image: gw, title: 'Goldwings Insurance Agency', category: '' },
   { id: 6, image: whatif, title: 'What If', category: '' },
-  // Add more designs as needed
 ];
+
+  const certifications = [
+    {
+      title: 'Cybersecurity: Safeguarding User\'s Privacy and Data Security',
+      issuer: 'Unknown Issuer',
+      date: '2022',
+      icon: '🔒',
+      link: '#'
+    },
+    {
+      title: 'Power Up: 8bIT "Jobs in the Gaming Industry"',
+      issuer: 'Unknown Issuer',
+      date: '2023',
+      icon: '🎮',
+      link: '#'
+    },
+    {
+      title: 'Cisco Certified Network Associate (CCNA)',
+      issuer: 'Cisco',
+      date: '',
+      icon: '🌐',
+      link: '#'
+    },
+    {
+      title: 'CS50W: Web Programming with Python and JavaScript',
+      issuer: 'Harvard University / edX',
+      date: '',
+      icon: '🎓',
+      link: '#'
+    },
+    {
+      title: 'Google Ads Apps Certification',
+      issuer: 'Google',
+      date: '',
+      icon: '📱',
+      link: '#'
+    },
+    {
+      title: 'Introduction to Generative AI',
+      issuer: 'Google',
+      date: '',
+      icon: '🤖',
+      link: '#'
+    },
+    {
+      title: 'AI-Powered Performance Ads Certification',
+      issuer: 'Google',
+      date: '',
+      icon: '⚡',
+      link: '#'
+    },
+    {
+      title: 'Intro to AI Ethics',
+      issuer: 'LinkedIn',
+      date: '',
+      icon: '🧠',
+      link: '#'
+    },
+  ];
 
   return (
     <div className="min-h-screen">
@@ -497,50 +626,36 @@ const closeProfileModal = () => {
       <nav className={`fixed-nav ${isScrolled ? 'nav-scrolled' : ''}`}>
         <div className="nav-container">
           <div className="nav-inner">
-            <div className="nav-logo">
-              <button 
-                onClick={openProfileModal}
-                className="portfolio-logo-btn"
-                aria-label="View profile"
-              >
-                <span className="portt">Portfolio</span>
-              </button>
-            </div>
+          <div className="nav-logo" style={{ position: 'relative' }}>
+            <button 
+              onClick={() => setIsProfileModalOpen(prev => !prev)}
+              className="portfolio-logo-btn"
+              aria-label="View profile"
+            >
+              <ArrowRight className="portfolio-arrow-right" size={18} />
+              <span className="portt">Portfolio</span>
+              <ArrowLeft className="portfolio-arrow-left" size={18} />
+            </button>
 
-            {/* Profile Modal */}
+            {/* Profile Popover — anchored inline below the button */}
             {isProfileModalOpen && (
-              <div className={`profile-modal ${isClosing ? 'closing' : ''}`}>
-                <div className="profile-modal-overlay" onClick={closeProfileModal}></div>
-                <div className="profile-modal-content">
-                
-                  <div className="profile-modal-inner">
-                    <div className="profile-image-container">
-                      <div className="profile-image-wrapper">
-                        <img 
-                          src={profileImage} 
-                          alt="Sean Patrick Morales"
-                          className="profile-image"
-                        />
-                      </div>
-                      <div className="profile-rings">
-                        <div className="profile-ring profile-ring-1"></div>
-                        <div className="profile-ring profile-ring-2"></div>
-                        <div className="profile-ring profile-ring-3"></div>
-                      </div>
-                    </div>
-                    
-                    <div className="profile-info">
-                      <h2 className="profile-name">Sean Patrick Morales</h2>
-                    </div>
-                  </div>
+              <div className={`profile-popover ${isClosing ? 'closing' : ''}`}>
+                <div className="profile-popover-image-wrapper">
+                  <img
+                    src={profileImage}
+                    alt="Sean Patrick Morales"
+                    className="profile-popover-image"
+                  />
                 </div>
+                <p className="profile-popover-name"></p>
               </div>
             )}
-            
-            {/* Desktop Navigation */}
+          </div>
+
+              {/* Desktop Navigation */}
             <div className="nav-desktop">
               <div className="nav-desktop-items">
-                {['hero', 'about', 'projects', 'gallery', 'skills', 'contact'].map((section) => (
+                {['hero', 'about', 'projects', 'gallery', 'skills', 'certifications', 'contact'].map((section) => (
                   <button
                     key={section}
                     onClick={() => scrollToSection(section)}
@@ -578,7 +693,7 @@ const closeProfileModal = () => {
         {isMenuOpen && (
         <div className="mobile-menu">
           <div className="mobile-menu-items">
-            {['hero', 'about', 'skills', 'projects', 'gallery', 'contact'].map((section) => (
+            {['hero', 'about', 'skills', 'certifications', 'projects', 'gallery', 'contact'].map((section) => (
               <button
                 key={section}
                 onClick={() => scrollToSection(section)}
@@ -592,19 +707,18 @@ const closeProfileModal = () => {
       )}
      </nav>
 
-      {/* Hero Section */}
       <section id="hero" className="hero-section">
         <div className="hero-overlay"></div>
         <ParallaxElement speed={0.3} className="hero-content animate-fade-in">
           <ScrollReveal direction="fade" delay={200}>
-            <h1 className="hero-title">
+            <h1 className="hero-title hero-title-glitch" data-text="Sean Patrick Morales">
               Sean Patrick Morales
             </h1>
           </ScrollReveal>
           <ScrollReveal direction="up" delay={400}>
             <p className="hero-subtitle">
-               Coding beautiful solutions that connect users and technology.
-            </p>
+            Building smart solutions where technology meets real-world needs.           
+             </p>
           </ScrollReveal>
           <ScrollReveal direction="up" delay={600}>
             <div className="hero-social-icons">
@@ -622,7 +736,15 @@ const closeProfileModal = () => {
           <ScrollReveal direction="up" delay={800}>
             <button
               onClick={() => scrollToSection('about')}
-              className="hero-button"
+              className="hero-button magnetic-btn"
+              onMouseMove={(e) => {
+                const btn = e.currentTarget;
+                const rect = btn.getBoundingClientRect();
+                const dx = e.clientX - rect.left - rect.width / 2;
+                const dy = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${dx * 0.3}px, ${dy * 0.3}px)`;
+              }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = ''; }}
             >
               Get Started
             </button>
@@ -693,7 +815,16 @@ const closeProfileModal = () => {
           
           <StaggeredReveal className="projects-grid" staggerDelay={200}>
             {projects.map((project, index) => (
-              <div key={index} className="project-card">
+              <TiltCard key={index} className="project-card">
+                <div className="project-spotlight" onMouseMove={(e) => {
+                  const card = e.currentTarget.parentElement;
+                  const rect = card.getBoundingClientRect();
+                  card.style.setProperty('--spot-x', `${e.clientX - rect.left}px`);
+                  card.style.setProperty('--spot-y', `${e.clientY - rect.top}px`);
+                  card.classList.add('spotlit');
+                }} onMouseLeave={(e) => {
+                  e.currentTarget.parentElement.classList.remove('spotlit');
+                }}></div>
                 <div className="project-image-container">
                   <img 
                     src={project.image} 
@@ -726,17 +857,17 @@ const closeProfileModal = () => {
                         <span>Live</span>
                       </a>
                     ) : (
-                      <button 
-                        onClick={() => openPreviewModal(project)}
-                        className="project-link preview-button"
-                      >
-                        <Eye className="w-4 h-4" /> 
-                        <span>Preview</span>
-                      </button>
+                    <button 
+                      onClick={() => openPreviewModal(project)}
+                      className="project-link preview-button"
+                    >
+                      <Eye className="w-4 h-4" /> 
+                      <span>Preview</span>
+                    </button>
                     )}
                   </div>
                 </div>
-              </div>
+              </TiltCard>
             ))}
           </StaggeredReveal>
         </div>
@@ -940,6 +1071,45 @@ const closeProfileModal = () => {
         </div>
       </section>
 
+      {/* Certifications Section */}
+      <section id="certifications" className="section certifications-section">
+        <div className="section-container">
+          <ScrollReveal direction="up" delay={100}>
+            <div className="section-header">
+              <h2 className="section-title">Certifications</h2>
+              <div className="section-divider"></div>
+            </div>
+          </ScrollReveal>
+
+          <StaggeredReveal className="certifications-grid" staggerDelay={120}>
+            {certifications.map((cert, index) => (
+              <div key={index} className="cert-card">
+                <div className="cert-content">
+                  <h3 className="cert-title">{cert.title}</h3>
+                  {cert.issuer && cert.issuer !== 'Unknown Issuer' && (
+                    <p className="cert-issuer">{cert.issuer}</p>
+                  )}
+                  <div className="cert-footer">
+                    {cert.date && (
+                      <span className="cert-date">{cert.date}</span>
+                    )}
+                    {cert.link && cert.link !== '#' && (
+                      <a href={cert.link} target="_blank" rel="noopener noreferrer" className="cert-link">
+                        <ExternalLink className="w-4 h-4" />
+                        <span>Verify</span>
+                      </a>
+                    )}
+                  </div>
+                  {cert.credentialId && (
+                    <p className="cert-id">ID: {cert.credentialId}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </StaggeredReveal>
+        </div>
+      </section>
+
       {/* Contact Section */}
       <section id="contact" className="section contact-section">
         <div className="contact-container">
@@ -1028,7 +1198,15 @@ const closeProfileModal = () => {
                   </div>
                   <button
                     type="submit"
-                    className="contact-button"
+                    className="contact-button magnetic-btn"
+                    onMouseMove={(e) => {
+                      const btn = e.currentTarget;
+                      const rect = btn.getBoundingClientRect();
+                      const dx = e.clientX - rect.left - rect.width / 2;
+                      const dy = e.clientY - rect.top - rect.height / 2;
+                      btn.style.transform = `translate(${dx * 0.25}px, ${dy * 0.25}px)`;
+                    }}
+                    onMouseLeave={(e) => { e.currentTarget.style.transform = ''; }}
                   >
                     Send Message
                   </button>
