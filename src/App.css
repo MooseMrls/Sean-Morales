@@ -2906,3 +2906,65 @@ html, body {
   position: relative;
   z-index: 1;
 }
+/* ── Clients Section ─────────────────────── */
+.clients-section { background: var(--gradient-section); }
+
+.clients-logo-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.client-logo-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 2px solid var(--glass-border);
+  border-radius: 50%;
+  box-shadow: var(--glass-shadow), var(--glass-inset);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  padding: 0;
+}
+
+.client-logo-card:hover {
+  background: var(--glass-bg-strong);
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--glass-shadow-hover), var(--glass-inset-strong);
+  transform: translateY(-4px);
+}
+
+.client-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  filter: grayscale(1) brightness(1.1);
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.client-logo-card:hover .client-logo-img {
+  filter: grayscale(0) brightness(1);
+  opacity: 1;
+}
+
+.client-logo-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+.client-logo-card:hover .client-logo-name {
+  color: var(--text-primary);
+}

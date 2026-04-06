@@ -6,19 +6,23 @@ import './App.css';
 import './loading/Preloader.css';
 
 import Duciel from './images/Duciel.jpg';
-import AM from './images/AM.jpg';
+import AM from './images/Unused/AM.jpg';
 import mapsa from './images/mapsa.jpg'
 import nugits from './images/nugits.png';
-import bul from './images/bulcard.png'; 
-import base from './images/base.png'; 
-import gw from './images/gw.png';
-import rh from './images/rh.png';
-import fallin from './images/fallin.jpeg';
-import whatif from './images/whatif.jpeg';
+import bul from './images/Unused/bulcard.png'; 
+import base from './images/Unused/base.png'; 
+import gw from './images/Unused/gw.png';
+import rh from './images/Unused/rh.png';
+import fallin from './images/Unused/fallin.jpeg';
+import whatif from './images/Unused/whatif.jpeg';
 import weather from './images/weather.jpg';
 import mhdc from './images/mhdc.jpg';
 import claw from './images/Claw.jpg';
 import swift from './images/swift.png';
+import ceap from './images/CEAPNCR LOGO.png';
+
+import duc1 from './images/duc1.png';
+
 
 import am1 from './images/am/am1.png';
 import am2 from './images/am/am2.png';
@@ -49,6 +53,15 @@ import reg3 from './images/mreg/reg3.png';
 import reg4 from './images/mreg/reg4.png';
 import reg5 from './images/mreg/reg5.png';
 import reg6 from './images/mreg/reg6.png';
+import reg7 from './images/mreg/reg7.png';
+
+import swift1 from './images/swift1.png';
+
+import ceap1 from './images/ceapncr1.png';
+
+import mapweb from './images/mapsaweb.png';
+
+import mhdcweb from './images/mhdcweb.png';
 
 import clev1 from './images/clev/clev1.png';
 import clev2 from './images/clev/clev2.png';
@@ -269,10 +282,10 @@ const App = () => {
     setIsScrolled(scrollPosition > 50);
     setShowScrollTop(scrollPosition > 300);
     
-    const isNearBottom = scrollPosition + windowHeight >= documentHeight - 200;
-    setIsNearBottom(isNearBottom);
+    const nearBottom = scrollPosition + windowHeight >= documentHeight - 200;
+    setIsNearBottom(nearBottom);
     
-    const sections = ['hero', 'about', 'skills', 'certifications', 'projects', 'gallery', 'contact'];
+    const sections = ['hero', 'about', 'skills', 'certifications', 'projects', 'gallery', 'clients', 'contact'];
     const currentSection = sections.find(section => {
       const element = document.getElementById(section);
       if (element) {
@@ -331,7 +344,7 @@ const App = () => {
       message: formData.message,
       to_email: 'morales.seanpatrick@gmail.com'
     }, userId)
-    .then((response) => {
+    .then(() => {
       alert('Message sent successfully!');
       setFormData({
         name: '',
@@ -344,6 +357,7 @@ const App = () => {
     });
   };
 
+  // eslint-disable-next-line no-unused-vars
   const openPreviewModal = (project) => {
     setSelectedPreview(project);
     setIsPreviewModalOpen(true);
@@ -395,13 +409,14 @@ const closeModal = () => {
   }, 300);
 };
 
-const closeProfileModal = () => {
-  setIsClosing(true);
-  setTimeout(() => {
-    setIsProfileModalOpen(false);
-    setIsClosing(false);
-  }, 250);
-};
+
+  const closeProfileModal = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsProfileModalOpen(false);
+      setIsClosing(false);
+    }, 250);
+  };
 
   // Close popover when clicking outside
   useEffect(() => {
@@ -442,7 +457,7 @@ const closeProfileModal = () => {
       title: 'Du Ciel Fragrance',
       description: 'Modern e-commerce platform built exclusively for perfume enthusiasts and sellers. Designed to deliver a seamless shopping experience, this allows customers to browse, order, and review premium fragrances—while providing admins with full control over inventory, sales records, and performance reports.',
       tech: ['React', 'Node.js', 'MongoDB'],
-      image: Duciel,
+      image: duc1,
       github: 'https://github.com/MooseMrls',
       live: 'https://duciel.vercel.app/',
       isPrivate: false 
@@ -451,7 +466,7 @@ const closeProfileModal = () => {
       title: 'Aquamom Management System',
       description: 'An all-in-one management system designed specifically for water refilling stations. It offers seamless tracking of daily sales, maintenance schedules, and customer transactions—empowering water station owners and staff to run operations smoothly and efficiently.',
       tech: ['React', 'Express', 'MongoDB'],
-      image: AM,
+      image: am1,
       github: 'https://github.com/MooseMrls',
       live: '',
       isPrivate: true,
@@ -461,7 +476,7 @@ const closeProfileModal = () => {
       title: 'MaPSA Management System',
       description: 'A comprehensive employee management system designed to streamline daily time tracking and workforce administration. Ideal for small to medium-sized organizations, the app allows HR personnel and managers to efficiently monitor employee attendance, file and approve leave requests, and manage employee records.',
       tech: ['Node.js', 'Express', 'Bible API', 'HTML', 'CSS'],
-      image: mapsa,
+      image: map4,
       github: 'https://github.com/MooseMrls',
       live: '',
       isPrivate: true,
@@ -477,7 +492,7 @@ const closeProfileModal = () => {
     },
     {
       title: 'Weather Mobile App',
-      description: 'A simple yet powerful weather application that provides real-time weather updates and forecasts. Built with React Native, it fetches data from a reliable weather API to deliver accurate information on current conditions, hourly forecasts, and extended weather outlooks.',
+      description: 'A simple yet powerful weather application that provides real-time weather updates and forecasts. It delivers accurate information on current conditions, hourly forecasts, and extended weather outlooks.',
       tech: ['React Native', 'OpenMeteo API'],
       image: weather,
       github:'https://github.com/MooseMrls',
@@ -488,7 +503,7 @@ const closeProfileModal = () => {
       title: 'MaPSA Holistic Development Center',
       description: 'A custom-built digital platform designed to streamline the operations of the retreat house. It provides an all-in-one solution for managing reservations, schedules, guest information, and facility usage, ensuring a seamless experience for both staff and visitors.',
       tech: ['React', 'Express', 'MongoDB'],
-      image: mhdc,
+      image: mhdc1,
       github:'https://github.com/MooseMrls',
       isPrivate: true,
       previewImages: [mhdc1, mhdc2, mhdc3, mhdc4, mhdc5, mhdc6, mhdc7, mhdc8, mhdc9] 
@@ -497,7 +512,7 @@ const closeProfileModal = () => {
       title: 'MaPSA Online Registration',
       description: 'A streamlined portal for user registration and admin operations.',
       tech: ['React', 'Express', 'MongoDB'],
-      image: mapsa,
+      image: reg7,
       github:'https://github.com/MooseMrls',
       isPrivate: true,
       previewImages: [reg1, reg2, reg3, reg4, reg5, reg6] 
@@ -506,16 +521,43 @@ const closeProfileModal = () => {
       title: 'Cleverly - Attendance System',
       description: 'A smart attendance system for students and faculty, combining RFID and facial recognition to ensure fast, accurate, and secure identity verification.',
       tech: ['React', 'Express', 'MongoDB'],
-      image: Clev3,
+      image: clev8,
       github:'https://github.com/MooseMrls',
       isPrivate: true,
-      previewImages: [clev1, clev2, clev3, clev4, clev5, clev6, clev7, clev8] 
+      previewImages: [clev1, clev2, clev3, clev4, clev5, clev6, clev7] 
     },
     {
       title: 'Payroll & Leave Management System',
       description: 'A web-based system that simplifies employee payroll processing and leave management. It allows administrators to manage employee records, calculate salaries, and track leave requests efficiently, improving accuracy and overall workforce management.',
       tech: ['React', 'Express', 'Node.js', 'MongoDB'],
-      image: swift,
+      image: swift1,
+      github:'https://github.com/MooseMrls',
+      isPrivate: true,
+      previewImages: [] 
+    },
+     {
+      title: 'CEAP NCR',
+      description: 'An informative Website for the Catholic Educational Association of the Philippines - NCR',
+      tech: ['React', 'Express', 'Node.js', 'MongoDB'],
+      image: ceap1,
+      github:'https://github.com/MooseMrls',
+      isPrivate: true,
+      previewImages: [] 
+    },
+     {
+      title: 'MaPSA',
+      description: 'Designed an informative Website for the Manila Ecclesiastical Province School Systems Association.',
+      tech: ['React', 'Express', 'Node.js', 'MongoDB'],
+      image: mapweb,
+      github:'https://github.com/MooseMrls',
+      isPrivate: true,
+      previewImages: [] 
+    },
+      {
+      title: 'MaPSA Holistic Development Center',
+      description: 'Designed an informative Website for the MaPSA Holistic Development Center',
+      tech: ['React', 'Express', 'Node.js', 'MongoDB'],
+      image: mhdcweb,
       github:'https://github.com/MooseMrls',
       isPrivate: true,
       previewImages: [] 
@@ -535,12 +577,12 @@ const closeProfileModal = () => {
     {
       icon: <Code className="w-8 h-8" />,
       title: 'Frontend Development',
-      description: 'Creating responsive, interactive user interfaces with modern frameworks like React.'
+      description: 'Creating responsive, interactive user interfaces with modern frameworks.'
     },
     {
       icon: <Globe className="w-8 h-8" />,
       title: 'Backend Development',
-      description: 'Building robust server-side applications with Node.js, and Python.'
+      description: 'Building robust server-side applications.'
     },
     {
       icon: <Palette className="w-8 h-8" />,
@@ -557,6 +599,18 @@ const closeProfileModal = () => {
   { id: 5, image: gw, title: 'Goldwings Insurance Agency', category: '' },
   { id: 6, image: whatif, title: 'What If', category: '' },
 ];
+
+  const clients = [
+    { name: 'Du Ciel Fragrance',   logo: Duciel },
+    { name: 'Aquamom',             logo: AM },
+    { name: 'MaPSA',               logo: mapsa },
+    { name: 'National University', logo: nugits },
+    { name: 'Cleverly',            logo: Clev3 },
+    { name: 'Swift',            logo: swift },
+    { name: 'CEAP NCR',            logo: ceap },
+    { name: 'MHDC',            logo: mhdc },
+
+  ];
 
   const certifications = [
     {
@@ -630,7 +684,7 @@ const closeProfileModal = () => {
               aria-label="View profile"
             >
               <ArrowRight className="portfolio-arrow-right" size={18} />
-              <span className="portt">Portfolio</span>
+              <span className="portt">Sean</span>
               <ArrowLeft className="portfolio-arrow-left" size={18} />
             </button>
 
@@ -652,7 +706,7 @@ const closeProfileModal = () => {
               {/* Desktop Navigation */}
             <div className="nav-desktop">
               <div className="nav-desktop-items">
-                {['hero', 'about', 'projects', 'gallery', 'skills', 'certifications', 'contact'].map((section) => (
+                {['hero', 'about', 'projects', 'skills', 'certifications', 'clients', 'contact'].map((section) => (
                   <button
                     key={section}
                     onClick={() => scrollToSection(section)}
@@ -690,7 +744,7 @@ const closeProfileModal = () => {
         {isMenuOpen && (
         <div className="mobile-menu">
           <div className="mobile-menu-items">
-            {['hero', 'about', 'skills', 'certifications', 'projects', 'gallery', 'contact'].map((section) => (
+            {['hero', 'about', 'skills', 'certifications', 'projects', 'clients', 'contact'].map((section) => (
               <button
                 key={section}
                 onClick={() => scrollToSection(section)}
@@ -713,9 +767,9 @@ const closeProfileModal = () => {
             </h1>
           </ScrollReveal>
           <ScrollReveal direction="up" delay={400}>
-            <p className="hero-subtitle">
+            {/* <p className="hero-subtitle">
             Building smart solutions where technology meets real-world needs.           
-             </p>
+             </p> */}
           </ScrollReveal>
           <ScrollReveal direction="up" delay={600}>
             <div className="hero-social-icons">
@@ -775,11 +829,11 @@ const closeProfileModal = () => {
                   From writing clean code to managing system infrastructure, I focus on creating efficient and scalable solutions. I’m always exploring new technologies to stay sharp and deliver my best work.
                 </p>
 
-                <div className="about-badges">
+                {/* <div className="about-badges">
                   <span className="about-badge">Full Stack Developer</span>
                   <span className='about-badge'>Systems Administrator</span>
                   <span className='about-badge'>Goal Oriented</span>
-                </div>
+                </div> */}
               </div>
             </ScrollReveal>
             
@@ -835,19 +889,15 @@ const closeProfileModal = () => {
                   <h3 className="project-title">{project.title}</h3>
                   <p className="project-description">{project.description}</p>
                   
-                  <div className="project-tech-container">
+                  {/* <div className="project-tech-container">
                     {project.tech.map((tech, techIndex) => (
                       <span key={techIndex} className="project-tech-item">
                         {tech}
                       </span>
                     ))}
-                  </div>
+                  </div> */}
                   
-                  <div className="project-links">
-                    <a href={project.github} className="project-link">
-                      <Github className="w-4 h-4" />
-                      <span>Code</span>
-                    </a>
+                  {/* <div className="project-links">
                     {project.live && !project.isPrivate ? (
                       <a href={project.live} className="project-link">
                         <ExternalLink className="w-4 h-4" />
@@ -862,7 +912,7 @@ const closeProfileModal = () => {
                       <span>Preview</span>
                     </button>
                     )}
-                  </div>
+                  </div> */}
                 </div>
               </TiltCard>
             ))}
@@ -937,7 +987,7 @@ const closeProfileModal = () => {
 )}
 
 {/* Gallery Modal */}
-<section id="gallery" className="gal-section">
+{/* <section id="gallery" className="gal-section">
   <div className="section-container">
     <ScrollReveal direction="up" delay={100}>
       <div className="section-header">
@@ -963,7 +1013,7 @@ const closeProfileModal = () => {
       </div>
     </ScrollReveal>
   </div>
-</section>
+</section> */}
 
       {/* Gallery Modal */}
       {isGalleryModalOpen && (
@@ -1101,6 +1151,29 @@ const closeProfileModal = () => {
                     <p className="cert-id">ID: {cert.credentialId}</p>
                   )}
                 </div>
+              </div>
+            ))}
+          </StaggeredReveal>
+        </div>
+      </section>
+
+      {/* Clients Section */}
+      <section id="clients" className="section clients-section">
+        <div className="section-container">
+          <ScrollReveal direction="up" delay={100}>
+            <div className="section-header">
+              <h2 className="section-title">Clients</h2>
+              <div className="section-divider"></div>
+            </div>
+          </ScrollReveal>
+
+          <StaggeredReveal className="clients-logo-grid" staggerDelay={100}>
+            {clients.map((client, index) => (
+              <div key={index} className="client-logo-card">
+                {client.logo
+                  ? <img src={client.logo} alt={client.name} className="client-logo-img" />
+                  : <span className="client-logo-name">{client.name}</span>
+                }
               </div>
             ))}
           </StaggeredReveal>
